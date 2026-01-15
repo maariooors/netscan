@@ -229,8 +229,8 @@ output() {
 
 check_host_ping() {
     local ip=$1
-    local use_output=$2  # "output" for output(), "echo" for echo -e
-    local buffer_file=$3  # Optional: buffer file path
+    local use_output=$2
+    local buffer_file=$3
 
     ping_output=$(ping -c 1 -W 1 "$ip" 2>&1)
     if echo "$ping_output" | grep -q "1 received\|1 packets received"; then
@@ -268,8 +268,8 @@ check_host_ping() {
 
 check_host_arp() {
     local ip=$1
-    local use_output=$2  # "output" for output(), "echo" for echo -e
-    local buffer_file=$3  # Optional: buffer file path
+    local use_output=$2
+    local buffer_file=$3
 
     if arp -n "$ip" 2>/dev/null | grep -q "ether"; then
         if [ -n "$buffer_file" ]; then
@@ -288,8 +288,8 @@ check_host_arp() {
 
 discover_host() {
     local ip=$1
-    local use_output=$2  # "output" for single host, "silent" for network scan with port scan
-    local buffer_file=$3  # Optional: buffer file for silent mode
+    local use_output=$2
+    local buffer_file=$3
 
     case "$DISCOVERY_MODE" in
         arp)
@@ -679,7 +679,7 @@ if [ -n "$SINGLE_HOST" ]; then
 else
     # Network scan mode
     if [ -n "$PORT_SCAN" ]; then
-        # Mode: Discover host and scan ports immediately
+
         for ((ip_int=network_int+1; ip_int<broadcast_int; ip_int++)); do
             current_ip=$(int2ip $ip_int)
             (
@@ -691,7 +691,7 @@ else
         done
         wait
     else
-        # Mode: Only host discovery (no port scan)
+        # Only host discovery
         for ((ip_int=network_int+1; ip_int<broadcast_int; ip_int++)); do
             current_ip=$(int2ip $ip_int)
             (
